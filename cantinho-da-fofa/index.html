@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantinho da Fofa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #FFFDE7; /* Amarelo Manteiga Fundo */
+            color: #4E342E; /* Marrom Suave para o texto */
+        }
+        
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .tab-active {
+            color: #4E342E; 
+            background-color: #FFF9C4; /* Amarelo Manteiga Destaque */
+            font-weight: 700;
+        }
+
+        /* Estilos do Quebra-Cabeça */
+        .puzzle-piece {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background-size: 300% 300%;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .puzzle-piece:active {
+            transform: scale(0.95);
+        }
+        .puzzle-piece.selected {
+            border: 3px solid #8D6E63; /* Marrom claro para seleção */
+            transform: scale(0.95);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#FFF9C4] selection:text-[#4E342E]">
+
+    <!-- Header / Título -->
+    <header class="pt-8 pb-4 text-center px-4">
+        <h1 class="text-3xl font-bold mb-1 flex items-center justify-center gap-2 text-[#4E342E]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#FFCC80]" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+            </svg>
+            Cantinho da Fofa
+        </h1>
+        <p class="text-sm text-[#6D4C41]">Seu espaço seguro, quentinho e cheio de amor.</p>
+    </header>
+
+    <!-- Área de Conteúdo Principal -->
+    <main class="flex-grow flex items-center justify-center w-full max-w-md mx-auto p-4 mb-24">
+        
+        <!-- ABA 1: RESPIRAR -->
+        <section id="tab-respirar" class="w-full bg-white/70 backdrop-blur-md rounded-3xl p-8 shadow-sm border border-white text-center fade-in">
+            <h2 class="text-xl font-semibold mb-2">Respiração Guiada</h2>
+            <p class="text-[#6D4C41] text-sm mb-12">Siga o círculo. Vá no seu tempo.</p>
+
+            <div class="relative w-48 h-48 mx-auto mb-12 flex items-center justify-center">
+                <!-- Círculo que expande -->
+                <div id="breathe-circle" class="absolute w-24 h-24 bg-[#FFF59D] rounded-full opacity-80" style="transition: transform 1s ease-in-out;"></div>
+                <!-- Círculo base para guiar o tamanho mínimo -->
+                <div class="absolute w-24 h-24 border-2 border-[#FFF9C4] rounded-full"></div>
+                <!-- Texto Central -->
+                <span id="breathe-text" class="relative z-10 font-bold text-lg">Pronta?</span>
+            </div>
+
+            <button id="breathe-btn" onclick="toggleBreathing()" class="bg-[#FFF9C4] hover:bg-[#FFF59D] text-[#4E342E] px-8 py-3 rounded-full font-bold transition-colors w-full sm:w-auto shadow-sm">
+                Começar
+            </button>
+        </section>
+
+        <!-- ABA 2: MENSAGENS DE AMOR -->
+        <section id="tab-amor" class="w-full bg-white/70 backdrop-blur-md rounded-3xl p-8 shadow-sm border border-white text-center hidden fade-in">
+            <div class="mb-6 flex justify-center">
+                <div class="w-16 h-16 bg-[#FFF9C4] rounded-full flex items-center justify-center text-[#8D6E63]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+            <h2 class="text-xl font-semibold mb-6">Nossas Verdades</h2>
+            
+            <div class="min-h-[140px] flex items-center justify-center mb-8 px-2">
+                <p id="message-display" class="text-lg text-[#5D4037] font-medium leading-relaxed">
+                    Clique no botão abaixo sempre que precisar lembrar do seu valor e do meu abraço.
+                </p>
+            </div>
+
+            <button onclick="showRandomMessage()" class="bg-[#FFF9C4] hover:bg-[#FFF59D] text-[#4E342E] px-6 py-3 rounded-full font-bold transition-colors w-full shadow-sm flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                </svg>
+                Ler uma mensagem
+            </button>
+        </section>
+
+        <!-- ABA 3: ACALMAR (ATERRAMENTO) -->
+        <section id="tab-acalmar" class="w-full bg-white/70 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-sm border border-white hidden fade-in">
+            <h2 class="text-xl font-semibold mb-2 text-center">Técnica de Acalmar</h2>
+            <p class="text-[#6D4C41] text-sm mb-6 text-center">Olhe ao seu redor e encontre:</p>
+
+            <ul class="space-y-4 text-[#5D4037] mb-8 font-medium">
+                <li class="flex items-center gap-3 bg-[#FFF9C4]/50 p-3 rounded-xl">
+                    <span class="w-8 h-8 rounded-full bg-[#FFF59D] flex items-center justify-center font-bold">5</span>
+                    <span>Coisas que você pode <strong>ver</strong></span>
+                </li>
+                <li class="flex items-center gap-3 bg-[#FFF9C4]/50 p-3 rounded-xl">
+                    <span class="w-8 h-8 rounded-full bg-[#FFF59D] flex items-center justify-center font-bold">4</span>
+                    <span>Coisas que você pode <strong>tocar</strong></span>
+                </li>
+                <li class="flex items-center gap-3 bg-[#FFF9C4]/50 p-3 rounded-xl">
+                    <span class="w-8 h-8 rounded-full bg-[#FFF59D] flex items-center justify-center font-bold">3</span>
+                    <span>Coisas que você pode <strong>ouvir</strong></span>
+                </li>
+                <li class="flex items-center gap-3 bg-[#FFF9C4]/50 p-3 rounded-xl">
+                    <span class="w-8 h-8 rounded-full bg-[#FFF59D] flex items-center justify-center font-bold">2</span>
+                    <span>Coisas que você pode <strong>cheirar</strong></span>
+                </li>
+                <li class="flex items-center gap-3 bg-[#FFF9C4]/50 p-3 rounded-xl">
+                    <span class="w-8 h-8 rounded-full bg-[#FFF59D] flex items-center justify-center font-bold">1</span>
+                    <span>Coisa que você pode <strong>saborear</strong></span>
+                </li>
+            </ul>
+
+            <div class="text-center p-4 bg-[#FFF9C4]/80 rounded-2xl">
+                <p class="font-bold text-sm">Respire. Estou a uma mensagem de distância. ❤️</p>
+            </div>
+        </section>
+
+        <!-- ABA 4: FOTOS (QUEBRA-CABEÇA) -->
+        <section id="tab-fotos" class="w-full bg-white/70 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-sm border border-white hidden fade-in text-center">
+            <h2 class="text-xl font-semibold mb-2">Nossas Memórias</h2>
+            <p class="text-[#6D4C41] text-sm mb-4">Clique em duas peças para trocá-las de lugar e formar a nossa foto.</p>
+
+            <div id="puzzle-grid" class="grid grid-cols-3 gap-1 w-full max-w-[260px] mx-auto mb-6 bg-[#FFF9C4] p-2 rounded-xl">
+                <!-- As peças do quebra-cabeça serão geradas via JavaScript -->
+            </div>
+
+            <p id="puzzle-message" class="text-green-600 font-bold mb-4 h-6 opacity-0 transition-opacity">Você montou! Que lindos ❤️</p>
+
+            <button onclick="changePuzzleImage()" class="bg-[#FFF9C4] hover:bg-[#FFF59D] text-[#4E342E] px-6 py-2 rounded-full font-bold transition-colors shadow-sm text-sm">
+                Trocar Foto
+            </button>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-[#FFF9C4] pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div class="max-w-md mx-auto flex justify-between p-2 px-4 gap-1">
+            
+            <button onclick="switchTab('respirar')" id="nav-respirar" class="tab-btn tab-active flex-1 flex flex-col items-center py-2 rounded-2xl gap-1 text-[#8D6E63] hover:text-[#4E342E]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-[10px] font-bold uppercase tracking-wider">Respirar</span>
+            </button>
+
+            <button onclick="switchTab('amor')" id="nav-amor" class="tab-btn flex-1 flex flex-col items-center py-2 rounded-2xl gap-1 text-[#8D6E63] hover:text-[#4E342E]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <span class="text-[10px] font-bold uppercase tracking-wider">Amor</span>
+            </button>
+
+            <button onclick="switchTab('acalmar')" id="nav-acalmar" class="tab-btn flex-1 flex flex-col items-center py-2 rounded-2xl gap-1 text-[#8D6E63] hover:text-[#4E342E]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+                <span class="text-[10px] font-bold uppercase tracking-wider">Acalmar</span>
+            </button>
+
+            <button onclick="switchTab('fotos')" id="nav-fotos" class="tab-btn flex-1 flex flex-col items-center py-2 rounded-2xl gap-1 text-[#8D6E63] hover:text-[#4E342E]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span class="text-[10px] font-bold uppercase tracking-wider">Fotos</span>
+            </button>
+
+        </div>
+    </nav>
+
+    <script>
+        // --- NAVEGAÇÃO DAS ABAS ---
+        const tabs = ['respirar', 'amor', 'acalmar', 'fotos'];
+
+        function switchTab(activeTab) {
+            // Parar a respiração se sair da aba
+            if(activeTab !== 'respirar' && isBreathing) {
+                toggleBreathing(); 
+            }
+            
+            // Iniciar o quebra-cabeça na primeira vez que abrir a aba
+            if(activeTab === 'fotos' && document.getElementById('puzzle-grid').innerHTML === '') {
+                initPuzzle();
+            }
+
+            tabs.forEach(tab => {
+                const section = document.getElementById(`tab-${tab}`);
+                const navBtn = document.getElementById(`nav-${tab}`);
+                
+                if (tab === activeTab) {
+                    section.classList.remove('hidden');
+                    navBtn.classList.add('tab-active');
+                } else {
+                    section.classList.add('hidden');
+                    navBtn.classList.remove('tab-active');
+                }
+            });
+        }
+
+        // --- LÓGICA DE RESPIRAÇÃO (4-4-6) ---
+        let isBreathing = false;
+        let breathingTimer;
+        
+        const circle = document.getElementById('breathe-circle');
+        const text = document.getElementById('breathe-text');
+        const btn = document.getElementById('breathe-btn');
+
+        function toggleBreathing() {
+            if (isBreathing) {
+                isBreathing = false;
+                clearTimeout(breathingTimer);
+                
+                circle.style.transition = 'transform 1s ease-in-out';
+                circle.style.transform = 'scale(1)';
+                text.innerText = "Pronta?";
+                btn.innerText = "Começar";
+            } else {
+                isBreathing = true;
+                btn.innerText = "Parar";
+                runBreatheCycle();
+            }
+        }
+
+        function runBreatheCycle() {
+            if (!isBreathing) return;
+
+            text.innerText = "Inspire...";
+            circle.style.transition = 'transform 4s ease-in-out';
+            circle.style.transform = 'scale(1.8)'; 
+
+            breathingTimer = setTimeout(() => {
+                if (!isBreathing) return;
+                text.innerText = "Segure...";
+                circle.style.transition = 'none'; 
+
+                breathingTimer = setTimeout(() => {
+                    if (!isBreathing) return;
+                    text.innerText = "Expire...";
+                    circle.style.transition = 'transform 6s ease-in-out';
+                    circle.style.transform = 'scale(1)'; 
+
+                    breathingTimer = setTimeout(runBreatheCycle, 6000);
+                }, 4000); 
+            }, 4000); 
+        }
+
+        // --- LÓGICA DE MENSAGENS DE AMOR (Atualizada) ---
+        const messages = [
+            "Você é a pessoa mais importante da minha vida, meu porto seguro onde eu sempre encontro paz.",
+            "O mundo é um lugar incrivelmente melhor, mais gentil e mais bonito só porque você existe nele.",
+            "Seu coração é gigantesco. A forma amorosa como você cuida de tudo ao seu redor me inspira todos os dias.",
+            "Feliz 1 ano de namoro, minha fofa! Você é a melhor parte dos meus dias.",
+            "Sua sensibilidade é uma força, não uma fraqueza. Eu amo cada pedacinho de quem você é.",
+            "Respire fundo. Feche os olhos. Sinta meu abraço apertado em você agora mesmo.",
+            "Você é suficiente. Você é forte. Você é imensamente amada por mim.",
+            "Mesmo nos dias mais nublados, o seu sorriso é o meu sol particular.",
+            "Não importa o que aconteça lá fora, aqui dentro, no nosso cantinho, você está sempre segura."
+        ];
+
+        let lastMessageIndex = -1;
+
+        function showRandomMessage() {
+            const display = document.getElementById('message-display');
+            
+            let newIndex = lastMessageIndex;
+            while(newIndex === lastMessageIndex) {
+                newIndex = Math.floor(Math.random() * messages.length);
+            }
+            lastMessageIndex = newIndex;
+
+            display.style.opacity = 0;
+            display.style.transform = 'scale(0.95)';
+            display.style.transition = 'all 0.3s ease';
+            
+            setTimeout(() => {
+                display.innerText = `"${messages[newIndex]}"`;
+                display.style.opacity = 1;
+                display.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        // --- LÓGICA DO QUEBRA-CABEÇA ---
+        const photos = ['foto1.jpg', 'foto2.jpg', 'foto3.jpg'];
+        let currentPhotoIdx = 0;
+        let selectedTile = null;
+        const GRID_SIZE = 3;
+
+        function initPuzzle() {
+            const grid = document.getElementById('puzzle-grid');
+            const msg = document.getElementById('puzzle-message');
+            grid.innerHTML = '';
+            msg.style.opacity = '0';
+            selectedTile = null;
+
+            // Criar array de posições e embaralhar
+            let positions = Array.from({length: GRID_SIZE * GRID_SIZE}, (_, i) => i);
+            
+            // Embaralhamento simples
+            for (let i = positions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [positions[i], positions[j]] = [positions[j], positions[i]];
+            }
+
+            positions.forEach((correctPos, currentPos) => {
+                let tile = document.createElement('div');
+                tile.className = 'puzzle-piece';
+                
+                // Configura a imagem
+                tile.style.backgroundImage = `url('${photos[currentPhotoIdx]}')`;
+                
+                // Calcula qual parte da imagem essa peça deve mostrar
+                let row = Math.floor(correctPos / GRID_SIZE);
+                let col = correctPos % GRID_SIZE;
+                
+                // Mapeia para porcentagem de background-position (0%, 50%, 100%)
+                let bgX = col * 50;
+                let bgY = row * 50;
+                
+                tile.style.backgroundPosition = `${bgX}% ${bgY}%`;
+                tile.dataset.correctPos = correctPos;
+                tile.dataset.currentPos = currentPos;
+                
+                tile.onclick = () => handleTileClick(tile);
+                grid.appendChild(tile);
+            });
+        }
+
+        function handleTileClick(tile) {
+            if (!selectedTile) {
+                // Seleciona a primeira peça
+                selectedTile = tile;
+                tile.classList.add('selected');
+            } else if (selectedTile === tile) {
+                // Deseleciona se clicar na mesma
+                selectedTile.classList.remove('selected');
+                selectedTile = null;
+            } else {
+                // Troca as imagens de fundo e o dataset (correctPos)
+                let tempBg = selectedTile.style.backgroundPosition;
+                let tempCorrectPos = selectedTile.dataset.correctPos;
+
+                selectedTile.style.backgroundPosition = tile.style.backgroundPosition;
+                selectedTile.dataset.correctPos = tile.dataset.correctPos;
+
+                tile.style.backgroundPosition = tempBg;
+                tile.dataset.correctPos = tempCorrectPos;
+
+                selectedTile.classList.remove('selected');
+                selectedTile = null;
+
+                checkWin();
+            }
+        }
+
+        function checkWin() {
+            const tiles = document.querySelectorAll('.puzzle-piece');
+            let isWin = true;
+            
+            tiles.forEach((tile, index) => {
+                if (parseInt(tile.dataset.correctPos) !== index) {
+                    isWin = false;
+                }
+            });
+
+            if (isWin) {
+                const msg = document.getElementById('puzzle-message');
+                msg.style.opacity = '1';
+                // Remove os cliques após ganhar
+                tiles.forEach(t => t.onclick = null);
+            }
+        }
+
+        function changePuzzleImage() {
+            currentPhotoIdx = (currentPhotoIdx + 1) % photos.length;
+            initPuzzle();
+        }
+    </script>
+</body>
+</html>
