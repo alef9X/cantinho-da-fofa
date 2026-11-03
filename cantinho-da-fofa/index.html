@@ -294,4 +294,219 @@
             <div class="grounding-title">Nossas Memórias 🧩</div>
             <div class="grounding-desc">Resolva o quebra-cabeça para ver a foto!</div>
             
-            <div class="photo-
+            <div class="photo-selector" id="photo-selector">
+                <!-- Miniaturas geradas pelo JS -->
+            </div>
+
+            <div id="puzzle-container"></div>
+            <div class="win-message" id="win-msg">Você conseguiu, porquita linda! 🥰</div>
+            
+            <button class="love-btn" style="margin-top:20px;" onclick="initPuzzle()">Embaralhar de novo</button>
+        </div>
+
+        <!-- AMOR -->
+        <div id="tab-amor" class="tab-content">
+            <div class="message-card">
+                <div class="message-text" id="love-message">
+                    Clique no botão abaixo para ler algo importante. 💛
+                </div>
+                <button class="love-btn" onclick="newMessage()">Ler outra mensagem</button>
+            </div>
+        </div>
+
+        <!-- ACALMAR -->
+        <div id="tab-acalmar" class="tab-content">
+            <div class="grounding-box">
+                <div class="grounding-title">Técnica 5-4-3-2-1</div>
+                <div class="grounding-desc">Olhe ao seu redor e marque o que você encontrar:</div>
+                
+                <label class="check-item"><input type="checkbox"> 5 coisas que você pode ver 👀</label>
+                <label class="check-item"><input type="checkbox"> 4 coisas que você pode tocar ✋</label>
+                <label class="check-item"><input type="checkbox"> 3 sons que você pode ouvir 👂</label>
+                <label class="check-item"><input type="checkbox"> 2 cheiros diferentes 👃</label>
+                <label class="check-item"><input type="checkbox"> 1 coisa boa sobre você 💛</label>
+            </div>
+
+            <button class="hug-btn" onclick="alert('Feche os olhos por 10 segundos e imagine o meu abraço bem apertado em você agora. Eu te amo muito, fofurona, e estou sempre com você! ❤️')">🚨 Preciso de um abraço agora!</button>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-item active" onclick="switchTab('respirar', this)">
+            <span class="nav-icon">🌬️</span> Respirar
+        </div>
+        <div class="nav-item" onclick="switchTab('fotos', this)">
+            <span class="nav-icon">🧩</span> Fotos
+        </div>
+        <div class="nav-item" onclick="switchTab('amor', this)">
+            <span class="nav-icon">💌</span> Amor
+        </div>
+        <div class="nav-item" onclick="switchTab('acalmar', this)">
+            <span class="nav-icon">🌷</span> Acalmar
+        </div>
+    </nav>
+
+    <script>
+        // --- NAVEGAÇÃO ---
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // --- RESPIRAÇÃO 4-4-6 ---
+        let breathInterval;
+        function startBreathing() {
+            const circle = document.getElementById('breath-circle');
+            const text = document.getElementById('breath-text');
+            const btn = document.getElementById('start-breath');
+            
+            btn.style.display = 'none';
+            clearInterval(breathInterval);
+
+            function cycle() {
+                // Inspira (4s)
+                text.innerText = "Inspira...";
+                circle.style.transition = "all 4s cubic-bezier(0.4, 0, 0.2, 1)";
+                circle.style.width = "220px";
+                circle.style.height = "220px";
+
+                // Segura (4s)
+                setTimeout(() => {
+                    text.innerText = "Segura...";
+                    circle.style.transition = "none"; 
+                }, 4000);
+
+                // Expira (6s)
+                setTimeout(() => {
+                    text.innerText = "Expira...";
+                    circle.style.transition = "all 6s cubic-bezier(0.4, 0, 0.2, 1)";
+                    circle.style.width = "100px";
+                    circle.style.height = "100px";
+                }, 8000);
+            }
+
+            cycle();
+            breathInterval = setInterval(cycle, 14000); // 4 + 4 + 6 = 14s
+        }
+
+        // --- MENSAGENS DE AMOR ---
+        const frasesAmor = [
+            "Fofurona, você é inteligente, linda e fofa mesmo! 💖",
+            "Você é minha porquita linda! 🐷💕",
+            "Não se esqueça que no fim tudo vai dar certo. 🌻",
+            "Porque, apesar das dificuldades, nós estaremos sempre juntos. 🤝💛",
+            "O mundo é um lugar muito melhor e mais bonito só porque você existe nele.",
+            "Sua bondade, seu jeitinho amoroso e seu carinho iluminam os meus dias.",
+            "Você é o meu porto seguro, minha paz e minha pessoa favorita no mundo inteiro.",
+            "Tenho muito orgulho da mulher incrível, forte e doce que você é todos os dias.",
+            "Cada pedacinho de você foi feito sob medida para o meu coração. Amo você!"
+            "Fofona, você pode estar nervosa agora, porém não se esqueça que o fofo está lutando pela nossa família, então relaxa princesa"
+           "fofona eu amo tanto você, que quase explodo de felicidade de ter você em minha vida"
+        ];
+
+        function newMessage() {
+            const textElement = document.getElementById('love-message');
+            let novaFrase = frasesAmor[Math.floor(Math.random() * frasesAmor.length)];
+            // Evitar repetir a mesma na sequência
+            while(textElement.innerText === novaFrase) {
+                novaFrase = frasesAmor[Math.floor(Math.random() * frasesAmor.length)];
+            }
+            textElement.style.opacity = 0;
+            setTimeout(() => {
+                textElement.innerText = novaFrase;
+                textElement.style.opacity = 1;
+                textElement.style.transition = "opacity 0.5s";
+            }, 300);
+        }
+
+        // --- QUEBRA-CABEÇA DAS FOTOS ---
+        let currentPhoto = "foto1.jpg";
+        const numPhotos = 10;
+        let puzzleState = [0, 1, 2, 3, 4, 5, 6, 7, 8]; // 8 é o espaço vazio
+        
+        function setupPhotoSelector() {
+            const selector = document.getElementById('photo-selector');
+            for(let i = 1; i <= numPhotos; i++) {
+                let img = document.createElement('img');
+                img.src = `foto${i}.jpg`;
+                img.className = 'photo-thumb' + (i === 1 ? ' active' : '');
+                img.onerror = () => { img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="%23FDE047"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="%23713F12">Foto '+i+'</text></svg>'; };
+                img.onclick = () => {
+                    document.querySelectorAll('.photo-thumb').forEach(el => el.classList.remove('active'));
+                    img.classList.add('active');
+                    currentPhoto = `foto${i}.jpg`;
+                    initPuzzle();
+                };
+                selector.appendChild(img);
+            }
+        }
+
+        function initPuzzle() {
+            document.getElementById('win-msg').style.display = 'none';
+            // Embaralhar simples
+            puzzleState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            for (let i = puzzleState.length - 2; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [puzzleState[i], puzzleState[j]] = [puzzleState[j], puzzleState[i]];
+            }
+            renderPuzzle();
+        }
+
+        function renderPuzzle() {
+            const container = document.getElementById('puzzle-container');
+            container.innerHTML = '';
+            
+            puzzleState.forEach((val, index) => {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece' + (val === 8 ? ' empty' : '');
+                
+                if (val !== 8) {
+                    piece.style.backgroundImage = `url('${currentPhoto}')`;
+                    let row = Math.floor(val / 3);
+                    let col = val % 3;
+                    piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+                }
+                
+                piece.onclick = () => movePiece(index);
+                container.appendChild(piece);
+            });
+            checkWin();
+        }
+
+        function movePiece(index) {
+            const emptyIndex = puzzleState.indexOf(8);
+            // Verifica se está ao lado do vazio (em cima, baixo, esq, dir)
+            const validMoves = [emptyIndex - 3, emptyIndex + 3];
+            if (emptyIndex % 3 !== 0) validMoves.push(emptyIndex - 1);
+            if (emptyIndex % 3 !== 2) validMoves.push(emptyIndex + 1);
+
+            if (validMoves.includes(index)) {
+                // Troca
+                [puzzleState[index], puzzleState[emptyIndex]] = [puzzleState[emptyIndex], puzzleState[index]];
+                renderPuzzle();
+            }
+        }
+
+        function checkWin() {
+            const isWin = puzzleState.every((val, index) => val === index);
+            if (isWin && document.getElementById('puzzle-container').children.length > 0) {
+                // Preencher o vazio na vitória
+                const pieces = document.getElementsByClassName('puzzle-piece');
+                pieces[8].classList.remove('empty');
+                pieces[8].style.backgroundImage = `url('${currentPhoto}')`;
+                pieces[8].style.backgroundPosition = `-200px -200px`;
+                document.getElementById('win-msg').style.display = 'block';
+            }
+        }
+
+        // Inicializar
+        setupPhotoSelector();
+        initPuzzle();
+        newMessage();
+
+    </script>
+</body>
+</html>
