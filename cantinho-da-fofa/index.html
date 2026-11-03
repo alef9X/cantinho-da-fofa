@@ -32,6 +32,40 @@
             overflow: hidden;
         }
 
+        /* --- POP-UP DE ANIVERSÁRIO --- */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .popup-card {
+            background-color: var(--white);
+            border: 3px dashed var(--accent);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(253, 224, 71, 0.4);
+            max-height: 90vh;
+            overflow-y: auto;
+            max-width: 400px;
+        }
+
+        .carta-texto {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            font-weight: 600;
+            text-align: left;
+            margin-bottom: 25px;
+            color: var(--text-main);
+        }
+
         header {
             text-align: center;
             padding: 20px 15px;
@@ -68,6 +102,23 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* --- BOTOES --- */
+        .action-btn {
+            margin-top: 15px;
+            padding: 15px 30px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--accent);
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: background 0.3s;
+            width: 100%;
+        }
+        
+        .action-btn:hover { background-color: var(--accent); }
+
         /* --- ABA RESPIRAR --- */
         .breath-container {
             position: relative;
@@ -96,405 +147,5 @@
             text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
         }
 
-        .action-btn {
-            margin-top: 30px;
-            padding: 15px 40px;
-            background-color: var(--card-bg);
-            border: 2px solid var(--accent);
-            border-radius: 30px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: background 0.3s;
-        }
-        
-        .action-btn:hover { background-color: var(--accent); }
-
         /* --- ABA AMOR --- */
         .message-card {
-            background-color: var(--white);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(253, 224, 71, 0.3);
-            text-align: center;
-            max-width: 90%;
-            border: 2px dashed var(--accent);
-        }
-
-        .message-text {
-            font-size: 1.3rem;
-            line-height: 1.6;
-            font-weight: 600;
-            margin-bottom: 25px;
-        }
-
-        /* --- ABA QUEBRA-CABEÇA --- */
-        .photo-selector {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 10px;
-            width: 100%;
-            max-width: 350px;
-            margin-bottom: 20px;
-        }
-        
-        .photo-thumb {
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 3px solid transparent;
-            cursor: pointer;
-            flex-shrink: 0;
-            background-color: var(--card-bg);
-        }
-        
-        .photo-thumb.active { border-color: var(--text-main); }
-
-        #puzzle-container {
-            width: 300px;
-            height: 300px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 2px;
-            background-color: var(--card-bg);
-            border: 4px solid var(--accent);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .puzzle-piece {
-            width: 100%;
-            height: 100%;
-            background-size: 300px 300px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .puzzle-piece.empty { background: none; cursor: default; }
-        
-        .win-message {
-            margin-top: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #166534;
-            display: none;
-            text-align: center;
-        }
-
-        /* --- ABA ACALMAR --- */
-        .grounding-box {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 350px;
-            margin-bottom: 15px;
-        }
-
-        .grounding-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 10px; text-align: center;}
-        .grounding-desc { font-size: 1rem; margin-bottom: 15px; color: var(--text-light); text-align: center;}
-        
-        .check-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .check-item input[type="checkbox"] {
-            margin-right: 12px;
-            width: 22px;
-            height: 22px;
-            accent-color: var(--text-main);
-            cursor: pointer;
-        }
-
-        .hug-btn {
-            width: 100%;
-            padding: 15px;
-            margin-top: 10px;
-            background-color: var(--text-main);
-            color: var(--bg-color);
-            border: none;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        /* --- NAVEGAÇÃO INFERIOR --- */
-        nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: var(--white);
-            padding: 15px 0;
-            border-top: 2px solid var(--card-bg);
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            z-index: 10;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .nav-item.active { color: var(--text-main); transform: scale(1.1); }
-        .nav-icon { font-size: 1.5rem; margin-bottom: 4px; }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>Cantinho da Fofa 🌻</h1>
-    </header>
-
-    <div class="content">
-        <!-- RESPIRAR -->
-        <div id="tab-respirar" class="tab-content active">
-            <div class="grounding-title">Respiração Guiada</div>
-            <div class="grounding-desc">Siga o círculo para acalmar o coração.</div>
-            
-            <div class="breath-container">
-                <div class="circle" id="breath-circle" style="width: 100px; height: 100px;"></div>
-                <div class="breath-text" id="breath-text">Pronta?</div>
-            </div>
-            
-            <button class="action-btn" id="start-breath" onclick="startBreathing()">Começar a respirar</button>
-        </div>
-
-        <!-- FOTOS -->
-        <div id="tab-fotos" class="tab-content">
-            <div class="grounding-title">Nossas Memórias 🧩</div>
-            <div class="grounding-desc">Resolva o quebra-cabeça para ver a foto!</div>
-            
-            <div class="photo-selector" id="photo-selector"></div>
-
-            <div id="puzzle-container"></div>
-            <div class="win-message" id="win-msg">Você conseguiu, porquita linda! 🥰</div>
-            
-            <button class="action-btn" onclick="initPuzzle()">Embaralhar de novo</button>
-        </div>
-
-        <!-- AMOR -->
-        <div id="tab-amor" class="tab-content">
-            <div class="message-card">
-                <div class="message-text" id="love-message">
-                    Carregando recadinho...
-                </div>
-                <button class="action-btn" onclick="newMessage()">Ler outra mensagem</button>
-            </div>
-        </div>
-
-        <!-- ACALMAR -->
-        <div id="tab-acalmar" class="tab-content">
-            <div class="grounding-box">
-                <div class="grounding-title">Técnica 5-4-3-2-1</div>
-                <div class="grounding-desc">Olhe ao seu redor e marque o que encontrar:</div>
-                
-                <label class="check-item"><input type="checkbox"> 5 coisas que você pode ver 👀</label>
-                <label class="check-item"><input type="checkbox"> 4 coisas que você pode tocar ✋</label>
-                <label class="check-item"><input type="checkbox"> 3 sons que você pode ouvir 👂</label>
-                <label class="check-item"><input type="checkbox"> 2 cheiros diferentes 👃</label>
-                <label class="check-item"><input type="checkbox"> 1 coisa boa sobre você 💛</label>
-            </div>
-
-            <button class="hug-btn" onclick="darAbraco()">🚨 Preciso de um abraço agora!</button>
-        </div>
-    </div>
-
-    <nav>
-        <div class="nav-item active" onclick="switchTab('respirar', this)">
-            <span class="nav-icon">🌬️</span> Respirar
-        </div>
-        <div class="nav-item" onclick="switchTab('fotos', this)">
-            <span class="nav-icon">🧩</span> Fotos
-        </div>
-        <div class="nav-item" onclick="switchTab('amor', this)">
-            <span class="nav-icon">💌</span> Amor
-        </div>
-        <div class="nav-item" onclick="switchTab('acalmar', this)">
-            <span class="nav-icon">🌷</span> Acalmar
-        </div>
-    </nav>
-
-    <script>
-        // --- NAVEGAÇÃO ---
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            element.classList.add('active');
-        }
-
-        // --- RESPIRAÇÃO ---
-        let breathInterval;
-        function startBreathing() {
-            const circle = document.getElementById('breath-circle');
-            const text = document.getElementById('breath-text');
-            const btn = document.getElementById('start-breath');
-            
-            btn.style.display = 'none';
-            clearInterval(breathInterval);
-
-            function cycle() {
-                text.innerText = "Inspira...";
-                circle.style.transition = "all 4s cubic-bezier(0.4, 0, 0.2, 1)";
-                circle.style.width = "220px";
-                circle.style.height = "220px";
-
-                setTimeout(() => {
-                    text.innerText = "Segura...";
-                    circle.style.transition = "none"; 
-                }, 4000);
-
-                setTimeout(() => {
-                    text.innerText = "Expira...";
-                    circle.style.transition = "all 6s cubic-bezier(0.4, 0, 0.2, 1)";
-                    circle.style.width = "100px";
-                    circle.style.height = "100px";
-                }, 8000);
-            }
-
-            cycle();
-            breathInterval = setInterval(cycle, 14000);
-        }
-
-        // --- MENSAGENS DE AMOR ---
-        const frasesAmor = [
-            "Fofurona, você é inteligente, linda e fofa mesmo! 💖",
-            "Você é minha porquita linda! 🐷💕",
-            "Não se esqueça que no fim tudo vai dar certo. 🌻",
-            "Porque, apesar das dificuldades, nós estaremos sempre juntos. 🤝💛",
-            "O mundo é um lugar muito melhor e mais bonito só porque você existe nele.",
-            "Sua bondade, seu jeitinho amoroso e seu carinho iluminam os meus dias.",
-            "Você é o meu porto seguro, minha paz e minha pessoa favorita no mundo inteiro.",
-            "Tenho muito orgulho da mulher incrível, forte e doce que você é todos os dias.",
-            "Cada pedacinho de você foi feito sob medida para o meu coração. Amo você!"
-        ];
-
-        function newMessage() {
-            const textElement = document.getElementById('love-message');
-            let novaFrase = frasesAmor[Math.floor(Math.random() * frasesAmor.length)];
-            
-            while(textElement.innerText === novaFrase && frasesAmor.length > 1) {
-                novaFrase = frasesAmor[Math.floor(Math.random() * frasesAmor.length)];
-            }
-            
-            textElement.style.opacity = 0;
-            setTimeout(() => {
-                textElement.innerText = novaFrase;
-                textElement.style.opacity = 1;
-                textElement.style.transition = "opacity 0.5s";
-            }, 300);
-        }
-
-        // --- QUEBRA-CABEÇA ---
-        let currentPhoto = "foto1.jpg";
-        const numPhotos = 10;
-        let puzzleState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        
-        function setupPhotoSelector() {
-            const selector = document.getElementById('photo-selector');
-            for(let i = 1; i <= numPhotos; i++) {
-                let img = document.createElement('img');
-                img.src = `foto${i}.jpg`;
-                img.className = 'photo-thumb' + (i === 1 ? ' active' : '');
-                
-                // Imagem reserva caso a foto original falhe
-                img.onerror = () => { 
-                    img.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect width='60' height='60' fill='%23FDE047'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='12' fill='%23713F12'%3EFoto " + i + "%3C/text%3E%3C/svg%3E"; 
-                };
-                
-                img.onclick = () => {
-                    document.querySelectorAll('.photo-thumb').forEach(el => el.classList.remove('active'));
-                    img.classList.add('active');
-                    currentPhoto = `foto${i}.jpg`;
-                    initPuzzle();
-                };
-                selector.appendChild(img);
-            }
-        }
-
-        function initPuzzle() {
-            document.getElementById('win-msg').style.display = 'none';
-            puzzleState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-            for (let i = puzzleState.length - 2; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [puzzleState[i], puzzleState[j]] = [puzzleState[j], puzzleState[i]];
-            }
-            renderPuzzle();
-        }
-
-        function renderPuzzle() {
-            const container = document.getElementById('puzzle-container');
-            container.innerHTML = '';
-            
-            puzzleState.forEach((val, index) => {
-                const piece = document.createElement('div');
-                piece.className = 'puzzle-piece' + (val === 8 ? ' empty' : '');
-                
-                if (val !== 8) {
-                    piece.style.backgroundImage = `url('${currentPhoto}')`;
-                    let row = Math.floor(val / 3);
-                    let col = val % 3;
-                    piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
-                }
-                
-                piece.onclick = () => movePiece(index);
-                container.appendChild(piece);
-            });
-            checkWin();
-        }
-
-        function movePiece(index) {
-            const emptyIndex = puzzleState.indexOf(8);
-            const validMoves = [emptyIndex - 3, emptyIndex + 3];
-            if (emptyIndex % 3 !== 0) validMoves.push(emptyIndex - 1);
-            if (emptyIndex % 3 !== 2) validMoves.push(emptyIndex + 1);
-
-            if (validMoves.includes(index)) {
-                [puzzleState[index], puzzleState[emptyIndex]] = [puzzleState[emptyIndex], puzzleState[index]];
-                renderPuzzle();
-            }
-        }
-
-        function checkWin() {
-            const isWin = puzzleState.every((val, index) => val === index);
-            if (isWin && document.getElementById('puzzle-container').children.length > 0) {
-                const pieces = document.getElementsByClassName('puzzle-piece');
-                pieces[8].classList.remove('empty');
-                pieces[8].style.backgroundImage = `url('${currentPhoto}')`;
-                pieces[8].style.backgroundPosition = `-200px -200px`;
-                document.getElementById('win-msg').style.display = 'block';
-            }
-        }
-
-        function darAbraco() {
-            alert('Feche os olhos por 10 segundos e imagine o meu abraço bem apertado em você agora. Eu te amo muito, fofurona, e estou sempre com você! ❤️');
-        }
-
-        // --- INICIALIZAÇÃO ---
-        window.onload = () => {
-            setupPhotoSelector();
-            initPuzzle();
-            newMessage();
-        };
-    </script>
-</body>
-</html>
